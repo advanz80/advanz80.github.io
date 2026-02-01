@@ -1,2 +1,2 @@
 # ClaudeCodeProbeersels
-Probeersels voor claude code
+Dit is een proefversie van een Human Dynamics test
