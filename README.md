@@ -1,2 +1,2 @@
-# advanz80.github.io
-Publiceren van probeersels
+# ClaudeCodeProbeersels
+Probeersels voor claude code

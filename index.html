@@ -1,0 +1,1644 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Human Dynamics - Ontdek Jouw Dynamiek</title>
+    <style>
+        :root {
+            --mental: #4361ee;
+            --mental-light: #e8ecfd;
+            --mental-bg: #f0f3ff;
+            --emotional: #e63946;
+            --emotional-light: #fde8ea;
+            --emotional-bg: #fff0f1;
+            --physical: #2d9f4e;
+            --physical-light: #e4f5ea;
+            --physical-bg: #f0faf3;
+            --bg: #fafbfe;
+            --card-bg: #ffffff;
+            --text: #1a1a2e;
+            --text-light: #6b7280;
+            --border: #e5e7eb;
+            --shadow: 0 2px 12px rgba(0,0,0,0.08);
+            --shadow-lg: 0 8px 30px rgba(0,0,0,0.12);
+            --radius: 16px;
+            --radius-sm: 10px;
+            --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 680px;
+            margin: 0 auto;
+            padding: 20px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            padding: 16px 0;
+            flex-shrink: 0;
+        }
+
+        .header .logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            margin-bottom: 4px;
+        }
+
+        .header .logo-circles {
+            display: flex;
+            gap: 4px;
+        }
+
+        .header .logo-circle {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        .header .logo-circle.m { background: var(--mental); }
+        .header .logo-circle.e { background: var(--emotional); }
+        .header .logo-circle.f { background: var(--physical); }
+
+        .header h1 {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--text);
+            letter-spacing: -0.02em;
+        }
+
+        /* Screens */
+        .screen {
+            display: none;
+            flex: 1;
+            animation: fadeIn 0.4s ease;
+        }
+
+        .screen.active {
+            display: flex;
+            flex-direction: column;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(12px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(40px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        /* Welcome Screen */
+        .welcome {
+            text-align: center;
+            justify-content: center;
+            align-items: center;
+            gap: 32px;
+            padding: 20px 0;
+        }
+
+        .welcome-visual {
+            position: relative;
+            width: 200px;
+            height: 200px;
+            margin: 0 auto;
+        }
+
+        .welcome-visual .circle {
+            position: absolute;
+            border-radius: 50%;
+            opacity: 0.85;
+        }
+
+        .welcome-visual .circle.mental {
+            width: 130px;
+            height: 130px;
+            background: var(--mental);
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .welcome-visual .circle.emotional {
+            width: 130px;
+            height: 130px;
+            background: var(--emotional);
+            bottom: 10px;
+            left: 10px;
+        }
+
+        .welcome-visual .circle.physical {
+            width: 130px;
+            height: 130px;
+            background: var(--physical);
+            bottom: 10px;
+            right: 10px;
+        }
+
+        .welcome-visual .circle { mix-blend-mode: multiply; }
+
+        .welcome-content h2 {
+            font-size: 1.75rem;
+            font-weight: 800;
+            letter-spacing: -0.03em;
+            margin-bottom: 16px;
+            line-height: 1.2;
+        }
+
+        .welcome-content p {
+            color: var(--text-light);
+            font-size: 1rem;
+            max-width: 480px;
+            margin: 0 auto 8px;
+        }
+
+        .welcome-principles {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            margin-top: 24px;
+            flex-wrap: wrap;
+        }
+
+        .principle-tag {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 18px;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .principle-tag.mental { background: var(--mental-light); color: var(--mental); }
+        .principle-tag.emotional { background: var(--emotional-light); color: var(--emotional); }
+        .principle-tag.physical { background: var(--physical-light); color: var(--physical); }
+
+        .principle-tag .dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+        }
+
+        .principle-tag.mental .dot { background: var(--mental); }
+        .principle-tag.emotional .dot { background: var(--emotional); }
+        .principle-tag.physical .dot { background: var(--physical); }
+
+        /* Buttons */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 16px 40px;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.05rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: var(--transition);
+            text-decoration: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .btn-primary {
+            background: var(--text);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .btn-primary:active {
+            transform: translateY(0);
+        }
+
+        .btn-secondary {
+            background: var(--card-bg);
+            color: var(--text);
+            border: 2px solid var(--border);
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--text);
+        }
+
+        .btn:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+            transform: none !important;
+        }
+
+        /* Progress Bar */
+        .progress-section {
+            flex-shrink: 0;
+            margin-bottom: 24px;
+        }
+
+        .progress-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+            font-size: 0.85rem;
+            color: var(--text-light);
+        }
+
+        .progress-info .current-q {
+            font-weight: 700;
+            color: var(--text);
+            font-size: 0.95rem;
+        }
+
+        .progress-bar {
+            height: 6px;
+            background: var(--border);
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--mental), var(--emotional), var(--physical));
+            border-radius: 3px;
+            transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* Question */
+        .question-area {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .question-text {
+            font-size: 1.15rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            line-height: 1.4;
+            letter-spacing: -0.01em;
+        }
+
+        .question-instruction {
+            font-size: 0.85rem;
+            color: var(--text-light);
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .question-instruction .step-badge {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: white;
+        }
+
+        .question-instruction .step-badge.step1 { background: var(--physical); }
+        .question-instruction .step-badge.step2 { background: var(--emotional); }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            flex: 1;
+        }
+
+        .option-card {
+            padding: 18px 20px;
+            background: var(--card-bg);
+            border: 2px solid var(--border);
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            transition: var(--transition);
+            font-size: 0.95rem;
+            line-height: 1.5;
+            position: relative;
+            -webkit-tap-highlight-color: transparent;
+            user-select: none;
+        }
+
+        .option-card:hover {
+            border-color: #c0c4cc;
+            background: #f9fafb;
+        }
+
+        .option-card:active {
+            transform: scale(0.98);
+        }
+
+        .option-card.selected-most {
+            border-color: var(--physical);
+            background: var(--physical-bg);
+        }
+
+        .option-card.selected-most::after {
+            content: 'Meest';
+            position: absolute;
+            top: -10px;
+            right: 12px;
+            background: var(--physical);
+            color: white;
+            font-size: 0.7rem;
+            font-weight: 700;
+            padding: 2px 10px;
+            border-radius: 20px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .option-card.selected-least {
+            border-color: var(--emotional);
+            background: var(--emotional-bg);
+            opacity: 0.7;
+        }
+
+        .option-card.selected-least::after {
+            content: 'Minst';
+            position: absolute;
+            top: -10px;
+            right: 12px;
+            background: var(--emotional);
+            color: white;
+            font-size: 0.7rem;
+            font-weight: 700;
+            padding: 2px 10px;
+            border-radius: 20px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .option-card.disabled {
+            pointer-events: none;
+        }
+
+        /* Navigation */
+        .nav-buttons {
+            display: flex;
+            gap: 12px;
+            margin-top: 24px;
+            flex-shrink: 0;
+            padding-bottom: 20px;
+        }
+
+        .nav-buttons .btn {
+            flex: 1;
+        }
+
+        .btn-back {
+            background: transparent;
+            color: var(--text-light);
+            border: 2px solid var(--border);
+            padding: 14px 24px;
+        }
+
+        .btn-next {
+            background: var(--text);
+            color: white;
+            padding: 14px 24px;
+        }
+
+        /* Results Screen */
+        .results {
+            padding-bottom: 40px;
+        }
+
+        .results-header {
+            text-align: center;
+            margin-bottom: 32px;
+        }
+
+        .results-header h2 {
+            font-size: 1.5rem;
+            font-weight: 800;
+            margin-bottom: 8px;
+            letter-spacing: -0.03em;
+        }
+
+        .results-header p {
+            color: var(--text-light);
+            font-size: 0.95rem;
+        }
+
+        .dynamic-result {
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-lg);
+            overflow: hidden;
+            margin-bottom: 24px;
+        }
+
+        .dynamic-result-header {
+            padding: 28px 24px;
+            text-align: center;
+            color: white;
+        }
+
+        .dynamic-result-header.mental-physical { background: linear-gradient(135deg, var(--mental), #2d9f4e); }
+        .dynamic-result-header.mental-emotional { background: linear-gradient(135deg, var(--mental), var(--emotional)); }
+        .dynamic-result-header.emotional-physical { background: linear-gradient(135deg, var(--emotional), var(--physical)); }
+        .dynamic-result-header.emotional-mental { background: linear-gradient(135deg, var(--emotional), var(--mental)); }
+        .dynamic-result-header.physical-emotional { background: linear-gradient(135deg, var(--physical), var(--emotional)); }
+        .dynamic-result-header.physical-mental { background: linear-gradient(135deg, var(--physical), var(--mental)); }
+
+        .dynamic-result-header .dynamic-label {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            opacity: 0.9;
+            margin-bottom: 8px;
+        }
+
+        .dynamic-result-header h3 {
+            font-size: 1.6rem;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+        }
+
+        .dynamic-result-body {
+            padding: 24px;
+        }
+
+        .dynamic-result-body p {
+            color: var(--text);
+            font-size: 0.95rem;
+            line-height: 1.7;
+            margin-bottom: 16px;
+        }
+
+        /* Score Bars */
+        .score-section {
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            padding: 24px;
+            margin-bottom: 24px;
+        }
+
+        .score-section h4 {
+            font-size: 1rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+
+        .score-bar-group {
+            margin-bottom: 16px;
+        }
+
+        .score-bar-group:last-child {
+            margin-bottom: 0;
+        }
+
+        .score-bar-label {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 6px;
+            font-size: 0.9rem;
+        }
+
+        .score-bar-label .name {
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .score-bar-label .name .dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+        }
+
+        .score-bar-label .percentage {
+            color: var(--text-light);
+            font-weight: 700;
+        }
+
+        .score-bar-track {
+            height: 10px;
+            background: #f0f1f3;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        .score-bar-value {
+            height: 100%;
+            border-radius: 5px;
+            transition: width 1s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .score-bar-value.mental { background: var(--mental); }
+        .score-bar-value.emotional { background: var(--emotional); }
+        .score-bar-value.physical { background: var(--physical); }
+
+        /* Characteristics */
+        .characteristics {
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            padding: 24px;
+            margin-bottom: 24px;
+        }
+
+        .characteristics h4 {
+            font-size: 1rem;
+            font-weight: 700;
+            margin-bottom: 16px;
+        }
+
+        .char-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .char-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.88rem;
+            padding: 8px 12px;
+            border-radius: var(--radius-sm);
+            background: #f8f9fa;
+        }
+
+        .char-item .icon {
+            font-size: 1.1rem;
+            flex-shrink: 0;
+        }
+
+        /* Tips Section */
+        .tips-section {
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            padding: 24px;
+            margin-bottom: 24px;
+        }
+
+        .tips-section h4 {
+            font-size: 1rem;
+            font-weight: 700;
+            margin-bottom: 16px;
+        }
+
+        .tip-item {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 14px;
+            font-size: 0.92rem;
+            line-height: 1.5;
+        }
+
+        .tip-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .tip-item .tip-icon {
+            flex-shrink: 0;
+            width: 28px;
+            height: 28px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.85rem;
+            margin-top: 2px;
+        }
+
+        /* Interaction Styles */
+        .interaction-section {
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            padding: 24px;
+            margin-bottom: 24px;
+        }
+
+        .interaction-section h4 {
+            font-size: 1rem;
+            font-weight: 700;
+            margin-bottom: 16px;
+        }
+
+        .interaction-item {
+            padding: 14px 16px;
+            border-radius: var(--radius-sm);
+            margin-bottom: 10px;
+            font-size: 0.92rem;
+            line-height: 1.5;
+        }
+
+        .interaction-item:last-child { margin-bottom: 0; }
+
+        .interaction-item.with-mental { background: var(--mental-light); border-left: 3px solid var(--mental); }
+        .interaction-item.with-emotional { background: var(--emotional-light); border-left: 3px solid var(--emotional); }
+        .interaction-item.with-physical { background: var(--physical-light); border-left: 3px solid var(--physical); }
+
+        .interaction-item strong {
+            display: block;
+            margin-bottom: 4px;
+            font-size: 0.88rem;
+        }
+
+        /* Restart */
+        .restart-section {
+            text-align: center;
+            padding: 20px 0 40px;
+        }
+
+        /* Disclaimer */
+        .disclaimer {
+            text-align: center;
+            font-size: 0.8rem;
+            color: var(--text-light);
+            padding: 16px;
+            border-top: 1px solid var(--border);
+            margin-top: 16px;
+        }
+
+        /* Info screen */
+        .info-screen {
+            gap: 24px;
+            padding: 10px 0 20px;
+        }
+
+        .info-card {
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            padding: 24px;
+        }
+
+        .info-card h3 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+
+        .info-card p {
+            font-size: 0.92rem;
+            color: var(--text-light);
+            line-height: 1.6;
+            margin-bottom: 12px;
+        }
+
+        .info-card p:last-child {
+            margin-bottom: 0;
+        }
+
+        .info-steps {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            margin-top: 16px;
+        }
+
+        .info-step {
+            display: flex;
+            gap: 14px;
+            align-items: flex-start;
+        }
+
+        .info-step-num {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: var(--text);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.85rem;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+
+        .info-step-text {
+            font-size: 0.92rem;
+            line-height: 1.5;
+            padding-top: 4px;
+        }
+
+        .info-nav {
+            display: flex;
+            gap: 12px;
+            margin-top: 8px;
+        }
+
+        .info-nav .btn { flex: 1; }
+
+        /* Mobile adjustments */
+        @media (max-width: 480px) {
+            .container {
+                padding: 16px;
+            }
+
+            .welcome-content h2 {
+                font-size: 1.4rem;
+            }
+
+            .welcome-visual {
+                width: 160px;
+                height: 160px;
+            }
+
+            .welcome-visual .circle.mental,
+            .welcome-visual .circle.emotional,
+            .welcome-visual .circle.physical {
+                width: 105px;
+                height: 105px;
+            }
+
+            .char-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .btn {
+                padding: 14px 28px;
+                font-size: 0.95rem;
+            }
+
+            .question-text {
+                font-size: 1.05rem;
+            }
+
+            .option-card {
+                padding: 16px;
+                font-size: 0.9rem;
+            }
+        }
+
+        /* Dark mode support */
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg: #0f1117;
+                --card-bg: #1a1d27;
+                --text: #e8eaed;
+                --text-light: #9aa0ab;
+                --border: #2d3140;
+                --mental-light: #1e2444;
+                --mental-bg: #161c36;
+                --emotional-light: #3d1a1e;
+                --emotional-bg: #2e1518;
+                --physical-light: #1a3324;
+                --physical-bg: #15281c;
+                --shadow: 0 2px 12px rgba(0,0,0,0.3);
+                --shadow-lg: 0 8px 30px rgba(0,0,0,0.4);
+            }
+
+            .option-card:hover {
+                background: #22252f;
+                border-color: #444;
+            }
+
+            .char-item {
+                background: #22252f;
+            }
+
+            .welcome-visual .circle {
+                opacity: 0.7;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header class="header">
+        <div class="logo">
+            <div class="logo-circles">
+                <div class="logo-circle m"></div>
+                <div class="logo-circle e"></div>
+                <div class="logo-circle f"></div>
+            </div>
+            <h1>Human Dynamics</h1>
+        </div>
+    </header>
+
+    <!-- Welcome Screen -->
+    <div id="welcome-screen" class="screen welcome active">
+        <div class="welcome-visual">
+            <div class="circle mental"></div>
+            <div class="circle emotional"></div>
+            <div class="circle physical"></div>
+        </div>
+        <div class="welcome-content">
+            <h2>Ontdek jouw persoonlijke dynamiek</h2>
+            <p>
+                Ieder mens heeft een unieke combinatie van drie fundamentele principes.
+                Ontdek welk principe bij jou centraal staat en hoe je de wereld benadert.
+            </p>
+            <div class="welcome-principles">
+                <span class="principle-tag mental"><span class="dot"></span> Mentaal</span>
+                <span class="principle-tag emotional"><span class="dot"></span> Emotioneel</span>
+                <span class="principle-tag physical"><span class="dot"></span> Fysiek</span>
+            </div>
+        </div>
+        <button class="btn btn-primary" onclick="showScreen('info-screen')">
+            Start de ontdekking
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </button>
+    </div>
+
+    <!-- Info Screen -->
+    <div id="info-screen" class="screen info-screen">
+        <div class="info-card">
+            <h3>Wat is Human Dynamics?</h3>
+            <p>
+                Human Dynamics, ontwikkeld door Sandra Seagal, beschrijft hoe mensen fundamenteel
+                verschillen in de manier waarop ze informatie verwerken, leren, communiceren en
+                samenwerken.
+            </p>
+            <p>
+                Het model onderscheidt drie principes die in ieder mens aanwezig zijn, maar in
+                verschillende verhoudingen:
+            </p>
+            <p>
+                <strong style="color: var(--mental);">Mentaal</strong> &mdash; het denken, analyseren, conceptualiseren en structureren.<br>
+                <strong style="color: var(--emotional);">Emotioneel</strong> &mdash; het voelen, verbinden, empathie en relaties.<br>
+                <strong style="color: var(--physical);">Fysiek</strong> &mdash; het doen, ervaren, structuur aanbrengen en in praktijk brengen.
+            </p>
+            <p>
+                Jouw <strong>dynamiek</strong> wordt bepaald door welk principe bij jou centraal
+                staat (gecentreerd) en welk principe je het meest ondersteunt (ondersteunend).
+            </p>
+        </div>
+
+        <div class="info-card">
+            <h3>Hoe werkt deze assessment?</h3>
+            <div class="info-steps">
+                <div class="info-step">
+                    <div class="info-step-num">1</div>
+                    <div class="info-step-text">
+                        Je krijgt <strong>18 scenario's</strong> met telkens drie uitspraken.
+                    </div>
+                </div>
+                <div class="info-step">
+                    <div class="info-step-num">2</div>
+                    <div class="info-step-text">
+                        Kies eerst de uitspraak die het <strong>meest</strong> op jou lijkt, daarna de uitspraak die het <strong>minst</strong> op jou lijkt.
+                    </div>
+                </div>
+                <div class="info-step">
+                    <div class="info-step-num">3</div>
+                    <div class="info-step-text">
+                        Aan het einde ontvang je een uitgebreid profiel van jouw persoonlijke dynamiek.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="info-card">
+            <h3>Tips voor betrouwbare resultaten</h3>
+            <p>
+                Kies vanuit hoe je <strong>van nature bent</strong>, niet hoe je denkt dat je zou moeten zijn.
+                Er zijn geen goede of foute antwoorden. Denk niet te lang na &mdash; je eerste
+                impuls is vaak het meest accuraat.
+            </p>
+        </div>
+
+        <div class="info-nav">
+            <button class="btn btn-back" onclick="showScreen('welcome-screen')">Terug</button>
+            <button class="btn btn-next" onclick="startAssessment()">
+                Begin
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </button>
+        </div>
+    </div>
+
+    <!-- Question Screen -->
+    <div id="question-screen" class="screen">
+        <div class="progress-section">
+            <div class="progress-info">
+                <span class="current-q" id="q-counter">Vraag 1 / 18</span>
+                <span id="q-category"></span>
+            </div>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progress-fill" style="width: 0%"></div>
+            </div>
+        </div>
+
+        <div class="question-area" id="question-area">
+            <div class="question-text" id="question-text"></div>
+            <div class="question-instruction" id="question-instruction">
+                <span class="step-badge step1">1</span>
+                <span>Kies de uitspraak die het <strong>meest</strong> op jou lijkt</span>
+            </div>
+            <div class="options" id="options-container"></div>
+        </div>
+
+        <div class="nav-buttons">
+            <button class="btn btn-back" id="btn-prev" onclick="prevQuestion()">Vorige</button>
+            <button class="btn btn-next" id="btn-next" onclick="nextQuestion()" disabled>Volgende</button>
+        </div>
+    </div>
+
+    <!-- Results Screen -->
+    <div id="results-screen" class="screen results"></div>
+</div>
+
+<script>
+// ============================================
+// QUESTION DATA
+// ============================================
+const questions = [
+    {
+        category: "Projectaanpak",
+        text: "Wanneer je aan een nieuw project begint...",
+        options: [
+            { principle: "M", text: "Analyseer ik eerst alle mogelijkheden en maak ik een helder plan met een duidelijke visie." },
+            { principle: "E", text: "Bespreek ik het enthousiast met anderen en zorg ik dat iedereen betrokken en gemotiveerd is." },
+            { principle: "F", text: "Ga ik zo snel mogelijk aan de slag en leer ik gaandeweg door te doen." }
+        ]
+    },
+    {
+        category: "Groepsdynamiek",
+        text: "In een groepsgesprek...",
+        options: [
+            { principle: "M", text: "Luister ik eerst goed en deel dan een doordachte, onderbouwde visie." },
+            { principle: "E", text: "Ben ik levendig betrokken, reageer ik op de energie en breng ik mensen bij elkaar." },
+            { principle: "F", text: "Richt ik me op concrete punten, praktische oplossingen en duidelijke afspraken." }
+        ]
+    },
+    {
+        category: "Leren",
+        text: "Bij het leren van iets nieuws...",
+        options: [
+            { principle: "M", text: "Wil ik eerst het totaalplaatje en de achterliggende theorie begrijpen voordat ik begin." },
+            { principle: "E", text: "Leer ik het beste in interactie met anderen en wanneer ik de persoonlijke relevantie voel." },
+            { principle: "F", text: "Wil ik het stap voor stap doorlopen en zelf oefenen tot ik het beheers." }
+        ]
+    },
+    {
+        category: "Stressreactie",
+        text: "Wanneer ik onder druk sta of stress ervaar...",
+        options: [
+            { principle: "M", text: "Trek ik me terug om na te denken, de situatie te analyseren en te doorgronden." },
+            { principle: "E", text: "Zoek ik contact met vertrouwde mensen om erover te praten en steun te vinden." },
+            { principle: "F", text: "Focus ik me op wat er concreet gedaan moet worden en ga ik in de actie." }
+        ]
+    },
+    {
+        category: "Sterke kanten",
+        text: "Wat waarderen anderen het meest aan jou?",
+        options: [
+            { principle: "M", text: "Mijn helder inzicht en vermogen om complexe zaken te doorgronden en te structureren." },
+            { principle: "E", text: "Mijn warmte, empathie en vermogen om mensen te verbinden en te inspireren." },
+            { principle: "F", text: "Mijn betrouwbaarheid, consistentie en praktische, doortastende aanpak." }
+        ]
+    },
+    {
+        category: "Besluitvorming",
+        text: "Als je een belangrijk besluit moet nemen...",
+        options: [
+            { principle: "M", text: "Weeg ik alle opties rationeel af en maak ik een logisch onderbouwde keuze." },
+            { principle: "E", text: "Ga ik af op mijn gevoel, intuïtie en de impact op de betrokken mensen." },
+            { principle: "F", text: "Kijk ik naar de feiten, eerdere ervaring en wat in de praktijk bewezen heeft gewerkt." }
+        ]
+    },
+    {
+        category: "Vrije tijd",
+        text: "In mijn vrije tijd...",
+        options: [
+            { principle: "M", text: "Lees ik graag, verdiep ik me in onderwerpen die me boeien of leer ik iets nieuws." },
+            { principle: "E", text: "Ben ik het liefst met mensen, deel ik ervaringen en geniet ik van gezelschap." },
+            { principle: "F", text: "Doe ik graag iets actiefs, werk ik met mijn handen of sport ik." }
+        ]
+    },
+    {
+        category: "Communicatie",
+        text: "Mijn manier van communiceren is...",
+        options: [
+            { principle: "M", text: "Precies en gestructureerd. Ik kies mijn woorden zorgvuldig en bouw een helder betoog op." },
+            { principle: "E", text: "Expressief en persoonlijk. Ik deel graag hoe ik me voel en zoek oprechte verbinding." },
+            { principle: "F", text: "Direct en to-the-point. Ik hou van duidelijkheid en richt me op wat er moet gebeuren." }
+        ]
+    },
+    {
+        category: "Energiebronnen",
+        text: "Wat geeft jou de meeste energie?",
+        options: [
+            { principle: "M", text: "Nieuwe ideeën verkennen, intellectueel uitgedaagd worden en inzichten opdoen." },
+            { principle: "E", text: "Betekenisvolle connecties maken met andere mensen en samen iets beleven." },
+            { principle: "F", text: "Iets tastbaars realiseren, concrete resultaten boeken en dingen afmaken." }
+        ]
+    },
+    {
+        category: "Werkorganisatie",
+        text: "Hoe organiseer je je werk het liefst?",
+        options: [
+            { principle: "M", text: "Ik creëer systemen, frameworks en overzichten om efficiënt en doordacht te werken." },
+            { principle: "E", text: "Ik werk het liefst samen, stem regelmatig af en houd de sfeer in de gaten." },
+            { principle: "F", text: "Ik maak een gedetailleerd plan met checklists en werk dat stap voor stap af." }
+        ]
+    },
+    {
+        category: "Conflicthantering",
+        text: "Bij een meningsverschil...",
+        options: [
+            { principle: "M", text: "Zoek ik naar de logica en onderbouwing van beide standpunten en zoek ik de waarheid." },
+            { principle: "E", text: "Probeer ik eerst te begrijpen hoe de ander zich voelt en zoek ik de verbinding." },
+            { principle: "F", text: "Richt ik me op het vinden van een praktische oplossing waar iedereen mee verder kan." }
+        ]
+    },
+    {
+        category: "Frustratiebronnen",
+        text: "Wat frustreert jou het meest?",
+        options: [
+            { principle: "M", text: "Onlogische beslissingen, gebrek aan diepgang en oppervlakkig denken." },
+            { principle: "E", text: "Een onpersoonlijke, koude benadering en gebrek aan menselijke maat." },
+            { principle: "F", text: "Vaagheid, chaos, gebrek aan structuur en eindeloos praten zonder actie." }
+        ]
+    },
+    {
+        category: "Informatieverwerking",
+        text: "Hoe verwerk je nieuwe informatie?",
+        options: [
+            { principle: "M", text: "Ik maak mentale modellen, zoek verbanden en plaats alles in een groter kader." },
+            { principle: "E", text: "Ik relateer het aan persoonlijke ervaringen en voel wat het voor mij betekent." },
+            { principle: "F", text: "Ik probeer het meteen uit en pas het direct toe in de praktijk." }
+        ]
+    },
+    {
+        category: "Werkomgeving",
+        text: "In welke werkomgeving voel je je het beste?",
+        options: [
+            { principle: "M", text: "Een rustige omgeving met ruimte om te denken, te lezen en te conceptualiseren." },
+            { principle: "E", text: "Een warme, open omgeving met veel interactie en samenwerking." },
+            { principle: "F", text: "Een gestructureerde omgeving met duidelijke processen en concrete doelen." }
+        ]
+    },
+    {
+        category: "Verandering",
+        text: "Wat is voor jou het belangrijkst bij verandering?",
+        options: [
+            { principle: "M", text: "Begrijpen waarom de verandering nodig is en wat de achterliggende visie is." },
+            { principle: "E", text: "Dat iedereen meegenomen wordt, zich gehoord voelt en er draagvlak is." },
+            { principle: "F", text: "Een duidelijk stappenplan, concrete tijdlijn en heldere verwachtingen." }
+        ]
+    },
+    {
+        category: "Leiderschap",
+        text: "Als jij de leiding hebt...",
+        options: [
+            { principle: "M", text: "Geef ik richting door visie en strategie te delen en denk ik vooruit." },
+            { principle: "E", text: "Inspireer en motiveer ik mensen door persoonlijke aandacht en oprecht luisteren." },
+            { principle: "F", text: "Zorg ik voor duidelijke structuur, concrete taken en consequente opvolging." }
+        ]
+    },
+    {
+        category: "Tijdsbeleving",
+        text: "Hoe ga je om met tijd?",
+        options: [
+            { principle: "M", text: "Ik denk graag vooruit, verken toekomstige mogelijkheden en scenario's." },
+            { principle: "E", text: "Ik leef in het moment, ben gevoelig voor de sfeer en neem de tijd voor mensen." },
+            { principle: "F", text: "Ik ben me bewust van deadlines, plan realistisch en bouw voort op wat werkt." }
+        ]
+    },
+    {
+        category: "Bijdrage aan een team",
+        text: "Welke rol neem je van nature in een team?",
+        options: [
+            { principle: "M", text: "De denker die het grote plaatje bewaakt, patronen herkent en richting geeft." },
+            { principle: "E", text: "De verbinder die zorgt voor sfeer, samenwerking en dat iedereen gehoord wordt." },
+            { principle: "F", text: "De uitvoerder die zorgt dat dingen daadwerkelijk gedaan worden en op schema blijft." }
+        ]
+    }
+];
+
+// ============================================
+// DYNAMICS DATA
+// ============================================
+const dynamicsData = {
+    "MF": {
+        name: "Mentaal-Fysiek",
+        cssClass: "mental-physical",
+        subtitle: "De Strategische Denker",
+        description: "Jij bent gecentreerd in het mentale principe en wordt ondersteund door het fysieke. Je bent iemand die de wereld benadert vanuit het denken: je wilt begrijpen, analyseren en doorgronden. Je fysieke component helpt je om ideeën te structureren en daadwerkelijk te realiseren.",
+        detailed: "Je hebt een natuurlijk talent voor het zien van het grote geheel en het ontwikkelen van strategische visies. Waar anderen zich verliezen in details, zie jij de rode draad. Je denkt graag in systemen en frameworks, en je fysieke ondersteuning zorgt ervoor dat je ideeën niet abstract blijven maar ook werkelijk worden uitgevoerd. Je neemt graag de tijd om een onderwerp grondig te doordenken voordat je tot actie overgaat. Als je eenmaal een visie hebt geformuleerd, ben je vastberaden en gedisciplineerd in de uitvoering.",
+        strengths: ["Strategisch inzicht", "Analytisch vermogen", "Systematisch denken", "Onafhankelijk", "Doordacht handelen", "Visionair"],
+        watchouts: ["Kan te lang in het hoofd blijven", "Moeite met 'loslaten' zonder volledig begrip", "Kan afstandelijk overkomen", "Neigt naar perfectionisme"],
+        tips: [
+            { icon: "bg: var(--emotional-light); color: var(--emotional)", text: "Plan bewust momenten in om te checken hoe het met je teamleden gaat. Je rationele aanpak is krachtig, maar mensen hebben soms ook behoefte aan een persoonlijke connectie." },
+            { icon: "bg: var(--physical-light); color: var(--physical)", text: "Je hoeft niet alles te doorgronden voordat je begint. Soms is 80% begrip voldoende om in actie te komen." },
+            { icon: "bg: var(--mental-light); color: var(--mental)", text: "Deel je visie regelmatig met anderen, ook als die nog niet 'af' is. Anderen kunnen je helpen om blinde vlekken te ontdekken." }
+        ],
+        interactions: {
+            mental: "Met andere mentaal-gecentreerde mensen kun je diepgaande gesprekken voeren en samen visies ontwikkelen. Pas op dat jullie niet te lang in het abstracte blijven hangen.",
+            emotional: "Emotioneel gecentreerde mensen brengen warmte en menselijkheid in je ideeën. Ze helpen je om draagvlak te creëren. Geef hen de persoonlijke aandacht die ze nodig hebben.",
+            physical: "Fysiek gecentreerde mensen zijn uitstekende partners om je visie te realiseren. Ze waarderen concrete plannen en duidelijke stappen. Wees geduldig met hun behoefte aan detail."
+        }
+    },
+    "ME": {
+        name: "Mentaal-Emotioneel",
+        cssClass: "mental-emotional",
+        subtitle: "De Inspirerende Visionair",
+        description: "Jij bent gecentreerd in het mentale principe en wordt ondersteund door het emotionele. Je combineert diep denken met een sterk gevoel voor mensen. Je ziet het grote plaatje en weet anderen daarin mee te nemen.",
+        detailed: "Je hebt het vermogen om complexe ideeën toegankelijk te maken en mensen te enthousiasmeren voor een visie. Waar de mentaal-fysieke dynamiek ideeën structureert en uitvoert, breng jij ideeën tot leven door er een menselijke dimensie aan toe te voegen. Je bent van nature een communicator die abstracte concepten kan vertalen naar iets dat mensen raakt. Je zoekt voortdurend naar de betekenis achter dingen en wilt die delen met anderen.",
+        strengths: ["Visionair denken", "Inspirerend communiceren", "Empathisch inzicht", "Verbindend vermogen", "Creatief probleemoplossen", "Coaching"],
+        watchouts: ["Kan overweldigd raken door te veel ideeën tegelijk", "Moeite met kiezen door te veel perspectieven", "Kan te veel energie steken in draagvlak", "Vergeet soms de praktische uitvoering"],
+        tips: [
+            { icon: "bg: var(--physical-light); color: var(--physical)", text: "Maak je ideeën concreet met een helder actieplan. Vraag een fysiek-gecentreerd persoon om je te helpen met de stappen." },
+            { icon: "bg: var(--emotional-light); color: var(--emotional)", text: "Je empathie is een kracht, maar pas op dat je niet te veel emotionele last van anderen draagt." },
+            { icon: "bg: var(--mental-light); color: var(--mental)", text: "Neem af en toe bewust afstand om je gedachten te ordenen. Stilte helpt je om helderheid te vinden." }
+        ],
+        interactions: {
+            mental: "Andere mentaal-gecentreerde mensen begrijpen je behoefte aan diepgang. Samen kunnen jullie briljante inzichten ontwikkelen.",
+            emotional: "Met emotioneel gecentreerde mensen deel je het gevoel voor menselijke verbinding. Jullie kunnen krachtig samenwerken aan het inspireren van groepen.",
+            physical: "Fysiek gecentreerde mensen helpen je om van visie naar realiteit te gaan. Waardeer hun pragmatisme als aanvulling op jouw conceptuele denken."
+        }
+    },
+    "EF": {
+        name: "Emotioneel-Fysiek",
+        cssClass: "emotional-physical",
+        subtitle: "De Zorgzame Realisator",
+        description: "Jij bent gecentreerd in het emotionele principe en wordt ondersteund door het fysieke. Je combineert een diep gevoel voor mensen met een praktische, hands-on aanpak. Je zorgt ervoor dat mensen zich gezien voelen én dat er concreet iets gebeurt.",
+        detailed: "Dit is de meest voorkomende dynamiek wereldwijd. Je ervaart de wereld primair door je gevoelens en relaties. Je fysieke component zorgt ervoor dat je zorg en betrokkenheid niet bij woorden blijft, maar dat je daadwerkelijk in actie komt voor de mensen om je heen. Je bent betrouwbaar, loyaal en consistent. Mensen komen naar jou toe omdat ze weten dat je niet alleen luistert, maar ook helpt. Je hebt een natuurlijk talent voor het creëren van een warme, veilige omgeving.",
+        strengths: ["Empathie en warmte", "Betrouwbaarheid", "Praktische zorgzaamheid", "Teamgericht", "Loyaliteit", "Uitvoerkracht"],
+        watchouts: ["Kan moeilijk 'nee' zeggen", "Neigt naar zelfopoffering", "Kan overweldigd raken door andermans emoties", "Moeite met abstracte, theoretische gesprekken"],
+        tips: [
+            { icon: "bg: var(--emotional-light); color: var(--emotional)", text: "Zorg ook voor jezelf. Jouw neiging om altijd klaar te staan voor anderen kan ten koste gaan van je eigen energie. Het is oké om grenzen te stellen." },
+            { icon: "bg: var(--mental-light); color: var(--mental)", text: "Neem soms afstand om te reflecteren op het grotere plaatje. Niet alles hoeft meteen opgelost te worden." },
+            { icon: "bg: var(--physical-light); color: var(--physical)", text: "Je praktische aanpak is een sterke kracht. Gebruik die ook voor jezelf door structuur en routines te creëren die je energie beschermen." }
+        ],
+        interactions: {
+            mental: "Mentaal-gecentreerde mensen kunnen soms afstandelijk lijken, maar ze waarderen je warmte meer dan ze laten merken. Geef hen de ruimte om na te denken.",
+            emotional: "Met andere emotioneel gecentreerde mensen voel je je snel thuis. Pas op dat jullie samen niet te veel in het gevoel blijven zonder tot actie te komen.",
+            physical: "Fysiek gecentreerde mensen delen je praktische instelling. Samen zijn jullie een productief duo dat dingen gedaan krijgt."
+        }
+    },
+    "EM": {
+        name: "Emotioneel-Mentaal",
+        cssClass: "emotional-mental",
+        subtitle: "De Inzichtvolle Verbinder",
+        description: "Jij bent gecentreerd in het emotionele principe en wordt ondersteund door het mentale. Je voelt wat er leeft bij mensen en hebt het vermogen om die gevoelens te begrijpen en te duiden. Je bent een natuurlijke coach en adviseur.",
+        detailed: "Je hebt een bijzonder talent: je combineert emotionele intelligentie met analytisch vermogen. Waar de emotioneel-fysieke dynamiek zorgt en doet, ben jij degene die voelt en begrijpt. Je kunt patronen herkennen in menselijk gedrag en hebt een diep inzicht in wat mensen drijft. Je bent vaak degene die in een groep de onderstroom aanvoelt en benoemt. Door je mentale ondersteuning kun je niet alleen voelen, maar ook verwoorden wat er speelt. Dit maakt je een krachtige communicator en bemiddelaar.",
+        strengths: ["Emotionele intelligentie", "Diep inzicht in mensen", "Coachend vermogen", "Verbale vaardigheid", "Bruggen bouwen", "Reflectief vermogen"],
+        watchouts: ["Kan te veel analyseren vanuit gevoel", "Moeite met snelle actie nemen", "Kan vastlopen in twijfel", "Neigt naar overmatig piekeren over relaties"],
+        tips: [
+            { icon: "bg: var(--physical-light); color: var(--physical)", text: "Vertaal je inzichten naar concrete acties. Een goed inzicht is pas waardevol als het leidt tot verandering." },
+            { icon: "bg: var(--emotional-light); color: var(--emotional)", text: "Vertrouw op je intuïtie. Je gevoel is vaak sneller dan je denken. Niet alles hoeft geanalyseerd te worden." },
+            { icon: "bg: var(--mental-light); color: var(--mental)", text: "Gebruik je analytische vermogen om patronen te herkennen, maar wees voorzichtig met het 'overdenken' van relaties." }
+        ],
+        interactions: {
+            mental: "Mentaal-gecentreerde mensen waarderen je vermogen om een menselijke dimensie toe te voegen aan hun ideeën. Jullie kunnen elkaar intellectueel stimuleren.",
+            emotional: "Andere emotioneel gecentreerde mensen herkennen je sensitiviteit. Samen kunnen jullie een veilige ruimte creëren, maar zorg dat er ook richting is.",
+            physical: "Fysiek gecentreerde mensen helpen je om van inzicht naar actie te gaan. Hun pragmatisme is een waardevolle aanvulling op jouw reflectieve aard."
+        }
+    },
+    "FE": {
+        name: "Fysiek-Emotioneel",
+        cssClass: "physical-emotional",
+        subtitle: "De Loyale Teamspeler",
+        description: "Jij bent gecentreerd in het fysieke principe en wordt ondersteund door het emotionele. Je bent een doener met een warm hart. Je combineert een praktische, stap-voor-stap aanpak met oprechte aandacht voor de mensen om je heen.",
+        detailed: "Je ervaart de wereld primair door te doen en te ervaren. Je leert door te oefenen, bouwt kennis op door herhaling en bent op je best als je concrete resultaten kunt boeken. Je emotionele ondersteuning zorgt ervoor dat je niet alleen taakgericht bent, maar ook oog hebt voor het welzijn van je collega's en naasten. Je bent iemand op wie mensen kunnen bouwen: consistent, loyaal en altijd bereid om de handen uit de mouwen te steken. In een team ben je de stabiele kracht die zorgt dat het werk gedaan wordt én dat de sfeer goed blijft.",
+        strengths: ["Betrouwbare uitvoering", "Teamloyaliteit", "Praktische hulpvaardigheid", "Consistentie", "Doorzettingsvermogen", "Zorgzaam in actie"],
+        watchouts: ["Kan vasthouden aan bekende patronen", "Moeite met snelle, onvoorbereide verandering", "Kan conflictvermijdend zijn", "Neigt naar te veel hooi op de vork nemen"],
+        tips: [
+            { icon: "bg: var(--mental-light); color: var(--mental)", text: "Sta af en toe stil om het grotere plaatje te bekijken. Soms is het nuttig om even te stoppen met doen en na te denken over de richting." },
+            { icon: "bg: var(--emotional-light); color: var(--emotional)", text: "Spreek uit wat je voelt. Jouw neiging is om te helpen door te doen, maar soms hebben mensen (en jijzelf) ook behoefte aan woorden." },
+            { icon: "bg: var(--physical-light); color: var(--physical)", text: "Waardeer je eigen behoefte aan structuur en voorbereiding. Het is geen zwakte om tijd nodig te hebben voordat je ergens mee begint." }
+        ],
+        interactions: {
+            mental: "Mentaal-gecentreerde mensen denken vaak in grote lijnen. Vraag hen om hun visie concreet te maken, zodat jij ermee aan de slag kunt.",
+            emotional: "Emotioneel gecentreerde mensen begrijpen en waarderen je zorgzaamheid. Samen creëren jullie een warme, productieve sfeer.",
+            physical: "Met andere fysiek gecentreerde mensen deel je de liefde voor concrete resultaten. Samen zijn jullie zeer productief."
+        }
+    },
+    "FM": {
+        name: "Fysiek-Mentaal",
+        cssClass: "physical-mental",
+        subtitle: "De Systematische Bouwer",
+        description: "Jij bent gecentreerd in het fysieke principe en wordt ondersteund door het mentale. Je combineert een praktische aanpak met systematisch denken. Je bouwt gestructureerd en doordacht aan tastbare resultaten.",
+        detailed: "Je bent iemand die de wereld benadert vanuit het doen, maar op een zeer georganiseerde en doordachte manier. Je mentale ondersteuning geeft je het vermogen om systemen te ontwerpen, processen te optimaliseren en logisch te structureren. Je bouwt kennis op door ervaring, maar je organiseert die kennis in heldere kaders. Je bent de persoon die niet alleen iets doet, maar ook nadenkt over de beste manier om het te doen. Kwaliteit en precisie zijn voor jou belangrijk. Je werkt methodisch en hebt een scherp oog voor detail.",
+        strengths: ["Systematisch werken", "Oog voor detail en kwaliteit", "Procesoptimalisatie", "Betrouwbare organisatie", "Logisch structureren", "Gedisciplineerde uitvoering"],
+        watchouts: ["Kan te rigide worden in processen", "Moeite met ambiguïteit", "Kan ongeduldig zijn met chaotische mensen", "Neigt naar overplanning"],
+        tips: [
+            { icon: "bg: var(--emotional-light); color: var(--emotional)", text: "Niet alles hoeft perfect gestructureerd te zijn. Soms is een menselijke, flexibele benadering effectiever dan het perfecte proces." },
+            { icon: "bg: var(--mental-light); color: var(--mental)", text: "Gebruik je analytische vermogen om te prioriteren. Niet elk detail is even belangrijk. Focus op wat het meeste impact heeft." },
+            { icon: "bg: var(--physical-light); color: var(--physical)", text: "Je liefde voor structuur is een kracht. Deel je systemen met anderen, maar sta open voor input en aanpassingen." }
+        ],
+        interactions: {
+            mental: "Mentaal-gecentreerde mensen delen je waardering voor logica en structuur. Samen kunnen jullie briljante systemen ontwerpen. Let op dat jullie ook de menselijke kant meenemen.",
+            emotional: "Emotioneel gecentreerde mensen brengen warmte en flexibiliteit. Ze helpen je om de menselijke maat te bewaren in je systemen.",
+            physical: "Andere fysiek gecentreerde mensen begrijpen je werkwijze. Samen zijn jullie zeer productief en georganiseerd."
+        }
+    }
+};
+
+// ============================================
+// STATE
+// ============================================
+let currentQuestion = 0;
+let answers = []; // Array of { most: principleKey, least: principleKey }
+let selectionStep = 0; // 0 = selecting most, 1 = selecting least
+let selectedMost = null;
+let selectedLeast = null;
+
+// ============================================
+// SCREEN MANAGEMENT
+// ============================================
+function showScreen(screenId) {
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    const screen = document.getElementById(screenId);
+    screen.classList.add('active');
+    window.scrollTo(0, 0);
+}
+
+// ============================================
+// ASSESSMENT
+// ============================================
+function startAssessment() {
+    currentQuestion = 0;
+    answers = new Array(questions.length).fill(null);
+    showScreen('question-screen');
+    renderQuestion();
+}
+
+function renderQuestion() {
+    const q = questions[currentQuestion];
+    const qArea = document.getElementById('question-area');
+
+    // Restore previous answer if exists
+    const prevAnswer = answers[currentQuestion];
+    if (prevAnswer) {
+        selectedMost = prevAnswer.most;
+        selectedLeast = prevAnswer.least;
+        selectionStep = 2;
+    } else {
+        selectedMost = null;
+        selectedLeast = null;
+        selectionStep = 0;
+    }
+
+    // Counter and progress
+    document.getElementById('q-counter').textContent = `Vraag ${currentQuestion + 1} / ${questions.length}`;
+    document.getElementById('q-category').textContent = q.category;
+    document.getElementById('progress-fill').style.width = `${((currentQuestion) / questions.length) * 100}%`;
+
+    // Question text
+    document.getElementById('question-text').textContent = q.text;
+
+    // Instruction
+    updateInstruction();
+
+    // Options - shuffle order but keep it consistent per question
+    const optionsContainer = document.getElementById('options-container');
+    optionsContainer.innerHTML = '';
+
+    // Use question index as seed for consistent shuffle
+    const shuffled = shuffleWithSeed(q.options, currentQuestion);
+
+    shuffled.forEach((opt, idx) => {
+        const card = document.createElement('div');
+        card.className = 'option-card';
+        card.textContent = opt.text;
+        card.dataset.principle = opt.principle;
+
+        if (prevAnswer) {
+            if (opt.principle === prevAnswer.most) card.classList.add('selected-most');
+            else if (opt.principle === prevAnswer.least) card.classList.add('selected-least');
+        }
+
+        card.addEventListener('click', () => handleOptionClick(opt.principle, card));
+        optionsContainer.appendChild(card);
+    });
+
+    // Animation
+    qArea.style.animation = 'none';
+    qArea.offsetHeight; // trigger reflow
+    qArea.style.animation = 'slideIn 0.3s ease';
+
+    // Navigation
+    document.getElementById('btn-prev').style.visibility = currentQuestion === 0 ? 'hidden' : 'visible';
+    updateNextButton();
+}
+
+function shuffleWithSeed(array, seed) {
+    const shuffled = [...array];
+    let s = seed + 42;
+    for (let i = shuffled.length - 1; i > 0; i--) {
+        s = (s * 9301 + 49297) % 233280;
+        const j = Math.floor((s / 233280) * (i + 1));
+        [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+    }
+    return shuffled;
+}
+
+function handleOptionClick(principle, card) {
+    const allCards = document.querySelectorAll('.option-card');
+
+    if (selectionStep === 0) {
+        // Selecting MOST
+        selectedMost = principle;
+        allCards.forEach(c => c.classList.remove('selected-most', 'selected-least'));
+        card.classList.add('selected-most');
+        selectionStep = 1;
+        updateInstruction();
+    } else if (selectionStep === 1) {
+        // Selecting LEAST (can't be same as most)
+        if (principle === selectedMost) return;
+        selectedLeast = principle;
+        allCards.forEach(c => {
+            if (c.dataset.principle === selectedMost) {
+                c.classList.add('selected-most');
+                c.classList.remove('selected-least');
+            } else if (c.dataset.principle === selectedLeast) {
+                c.classList.add('selected-least');
+                c.classList.remove('selected-most');
+            } else {
+                c.classList.remove('selected-most', 'selected-least');
+            }
+        });
+        selectionStep = 2;
+        updateInstruction();
+
+        // Save answer
+        answers[currentQuestion] = { most: selectedMost, least: selectedLeast };
+        updateNextButton();
+    } else {
+        // Re-selecting: reset
+        selectionStep = 0;
+        selectedMost = null;
+        selectedLeast = null;
+        allCards.forEach(c => c.classList.remove('selected-most', 'selected-least'));
+
+        // Start fresh with this click
+        selectedMost = principle;
+        card.classList.add('selected-most');
+        selectionStep = 1;
+        updateInstruction();
+        answers[currentQuestion] = null;
+        updateNextButton();
+    }
+}
+
+function updateInstruction() {
+    const instrEl = document.getElementById('question-instruction');
+    if (selectionStep === 0) {
+        instrEl.innerHTML = '<span class="step-badge step1">1</span><span>Kies de uitspraak die het <strong>meest</strong> op jou lijkt</span>';
+    } else if (selectionStep === 1) {
+        instrEl.innerHTML = '<span class="step-badge step2">2</span><span>Kies nu de uitspraak die het <strong>minst</strong> op jou lijkt</span>';
+    } else {
+        instrEl.innerHTML = '<span style="color: var(--physical); font-weight: 600;">&#10003; Keuze gemaakt</span><span style="color: var(--text-light); margin-left: 4px;">(klik opnieuw om te wijzigen)</span>';
+    }
+}
+
+function updateNextButton() {
+    const btn = document.getElementById('btn-next');
+    const isAnswered = answers[currentQuestion] !== null;
+    btn.disabled = !isAnswered;
+
+    if (currentQuestion === questions.length - 1 && isAnswered) {
+        btn.textContent = 'Bekijk resultaat';
+    } else {
+        btn.textContent = 'Volgende';
+    }
+}
+
+function nextQuestion() {
+    if (!answers[currentQuestion]) return;
+
+    if (currentQuestion < questions.length - 1) {
+        currentQuestion++;
+        renderQuestion();
+    } else {
+        // Calculate and show results
+        showResults();
+    }
+}
+
+function prevQuestion() {
+    if (currentQuestion > 0) {
+        currentQuestion--;
+        renderQuestion();
+    }
+}
+
+// ============================================
+// SCORING & RESULTS
+// ============================================
+function calculateScores() {
+    const scores = { M: 0, E: 0, F: 0 };
+    const maxPerQ = 2; // most = 2, middle = 1, least = 0
+
+    answers.forEach(answer => {
+        if (!answer) return;
+        scores[answer.most] += 2;
+        // The middle one gets 1
+        const allPrinciples = ['M', 'E', 'F'];
+        const middle = allPrinciples.find(p => p !== answer.most && p !== answer.least);
+        scores[middle] += 1;
+        // least gets 0
+    });
+
+    return scores;
+}
+
+function determineDynamic(scores) {
+    const sorted = Object.entries(scores).sort((a, b) => b[1] - a[1]);
+    const centered = sorted[0][0];
+    const sustaining = sorted[1][0];
+    return centered + sustaining;
+}
+
+function showResults() {
+    const scores = calculateScores();
+    const dynamicKey = determineDynamic(scores);
+    const dynamic = dynamicsData[dynamicKey];
+    const totalPoints = scores.M + scores.E + scores.F;
+
+    const principleNames = {
+        M: { name: 'Mentaal', color: 'var(--mental)', class: 'mental' },
+        E: { name: 'Emotioneel', color: 'var(--emotional)', class: 'emotional' },
+        F: { name: 'Fysiek', color: 'var(--physical)', class: 'physical' }
+    };
+
+    // Update progress
+    document.getElementById('progress-fill').style.width = '100%';
+
+    const resultsEl = document.getElementById('results-screen');
+    resultsEl.innerHTML = `
+        <div class="results-header">
+            <h2>Jouw Human Dynamics Profiel</h2>
+            <p>Op basis van jouw antwoorden op 18 scenario's</p>
+        </div>
+
+        <!-- Main Result -->
+        <div class="dynamic-result">
+            <div class="dynamic-result-header ${dynamic.cssClass}">
+                <div class="dynamic-label">Jouw dynamiek</div>
+                <h3>${dynamic.name}</h3>
+                <div style="margin-top: 4px; opacity: 0.9; font-size: 1rem;">${dynamic.subtitle}</div>
+            </div>
+            <div class="dynamic-result-body">
+                <p>${dynamic.description}</p>
+                <p>${dynamic.detailed}</p>
+            </div>
+        </div>
+
+        <!-- Score Distribution -->
+        <div class="score-section">
+            <h4>Jouw verdeling over de drie principes</h4>
+            ${Object.entries(scores)
+                .sort((a, b) => b[1] - a[1])
+                .map(([key, value]) => {
+                    const p = principleNames[key];
+                    const pct = Math.round((value / totalPoints) * 100);
+                    return `
+                        <div class="score-bar-group">
+                            <div class="score-bar-label">
+                                <span class="name">
+                                    <span class="dot" style="background: ${p.color}"></span>
+                                    ${p.name}
+                                </span>
+                                <span class="percentage">${pct}%</span>
+                            </div>
+                            <div class="score-bar-track">
+                                <div class="score-bar-value ${p.class}" style="width: 0%" data-target="${pct}"></div>
+                            </div>
+                        </div>
+                    `;
+                }).join('')}
+        </div>
+
+        <!-- Characteristics -->
+        <div class="characteristics">
+            <h4>Jouw kernkwaliteiten</h4>
+            <div class="char-grid">
+                ${dynamic.strengths.map(s => `
+                    <div class="char-item">
+                        <span class="icon" style="color: var(--physical);">&#10003;</span>
+                        <span>${s}</span>
+                    </div>
+                `).join('')}
+            </div>
+        </div>
+
+        <!-- Watch-outs -->
+        <div class="characteristics">
+            <h4>Aandachtspunten</h4>
+            <div class="char-grid">
+                ${dynamic.watchouts.map(w => `
+                    <div class="char-item">
+                        <span class="icon" style="color: var(--emotional);">&#9888;</span>
+                        <span>${w}</span>
+                    </div>
+                `).join('')}
+            </div>
+        </div>
+
+        <!-- Tips -->
+        <div class="tips-section">
+            <h4>Persoonlijke groeitips</h4>
+            ${dynamic.tips.map(tip => `
+                <div class="tip-item">
+                    <div class="tip-icon" style="${tip.icon}">&#9733;</div>
+                    <div>${tip.text}</div>
+                </div>
+            `).join('')}
+        </div>
+
+        <!-- Interactions -->
+        <div class="interaction-section">
+            <h4>Samenwerken met andere dynamieken</h4>
+            <div class="interaction-item with-mental">
+                <strong>Met mentaal-gecentreerde mensen</strong>
+                ${dynamic.interactions.mental}
+            </div>
+            <div class="interaction-item with-emotional">
+                <strong>Met emotioneel-gecentreerde mensen</strong>
+                ${dynamic.interactions.emotional}
+            </div>
+            <div class="interaction-item with-physical">
+                <strong>Met fysiek-gecentreerde mensen</strong>
+                ${dynamic.interactions.physical}
+            </div>
+        </div>
+
+        <!-- Disclaimer & Restart -->
+        <div class="restart-section">
+            <button class="btn btn-primary" onclick="restartAssessment()">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M1 4v6h6M23 20v-6h-6"/><path d="M20.49 9A9 9 0 0 0 5.64 5.64L1 10m22 4l-4.64 4.36A9 9 0 0 1 3.51 15"/></svg>
+                Opnieuw doen
+            </button>
+        </div>
+
+        <div class="disclaimer">
+            <p>
+                Deze tool is gebaseerd op de Human Dynamics theorie van Sandra Seagal en David Horne.
+                Het is bedoeld als zelfreflectie-instrument en geen wetenschappelijke diagnose.
+                Voor een volledige analyse wordt een gecertificeerde Human Dynamics begeleider aanbevolen.
+            </p>
+        </div>
+    `;
+
+    showScreen('results-screen');
+
+    // Animate score bars
+    setTimeout(() => {
+        document.querySelectorAll('.score-bar-value').forEach(bar => {
+            bar.style.width = bar.dataset.target + '%';
+        });
+    }, 200);
+}
+
+function restartAssessment() {
+    showScreen('welcome-screen');
+    currentQuestion = 0;
+    answers = [];
+    selectedMost = null;
+    selectedLeast = null;
+    selectionStep = 0;
+}
+
+// ============================================
+// KEYBOARD NAVIGATION
+// ============================================
+document.addEventListener('keydown', (e) => {
+    if (!document.getElementById('question-screen').classList.contains('active')) return;
+
+    if (e.key === 'ArrowRight' || e.key === 'Enter') {
+        if (!document.getElementById('btn-next').disabled) {
+            nextQuestion();
+        }
+    } else if (e.key === 'ArrowLeft') {
+        prevQuestion();
+    }
+});
+</script>
+
+</body>
+</html>
